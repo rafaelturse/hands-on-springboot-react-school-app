@@ -2,12 +2,16 @@ import ApiService from "../apiservice";
 
 class UserService extends ApiService {
 
-    constructor(){
+    constructor() {
         super('/api/users')
     }
 
-    authenticate(credentials){
+    authenticate(credentials) {
         return this.post('/authenticate', credentials)
+    }
+
+    save(user) {
+        return this.post('/', user);
     }
 }
 

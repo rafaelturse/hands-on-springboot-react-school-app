@@ -26,7 +26,7 @@ function Navbar() {
                         <NavbarItem href="#/insert-user" label="Users" />
                         <NavbarItem href="" label="Students" />
                         <NavbarItem href="" label="Schools" />
-                        <NavbarItem href="" label="Grades" />
+                        <NavbarItem href="#/search-grades" label="Grades" />
                         <NavbarItem href="#/login" label="Login" />
                     </ul>
                 </div>

@@ -27,9 +27,9 @@ export function errorMessage(message) {
 }
 
 export function successMessage(message) {
-    toastr['success'](message, 'Error')
+    toastr['success'](message, 'Success')
 }
 
 export function warningMessage(message) {
-    toastr['warning'](message, 'Error')
+    toastr['warning'](message, 'Warning')
 }
