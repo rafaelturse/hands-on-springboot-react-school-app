@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+import LocalStorageService from '../../app/service/localStorageService'
+
 class Home extends React.Component {
     state = {
         userName: ''
@@ -11,7 +13,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-        this.setState({userName: JSON.parse(localStorage.getItem('_logged_user'))}) 
+        this.setState({userName: LocalStorageService.getItem('_logged_user')}) 
     }
 
     render() {

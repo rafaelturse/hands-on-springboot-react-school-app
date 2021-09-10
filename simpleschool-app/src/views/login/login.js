@@ -1,14 +1,23 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Axios from 'axios';
+
+import UserService from '../../app/service/userService';
+import LocalStorageService from '../../app/service/localStorageService'
 
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
+import { errorMessage } from '../../components/toastr';
 
 class Login extends React.Component {
     state = {
         email: "",
-        password: ""
+        password: "",
+        errorMessage: null
+    }
+
+    constructor() {
+        super();
+        this.service = new UserService();
     }
 
     redirectHome = () => {
@@ -20,16 +29,15 @@ class Login extends React.Component {
     }
 
     signIn = async () => {
-        Axios
-            .post('http://localhost:8083/api/users/authenticate', {
-                email: this.state.email,
-                password: this.state.password
-            }).then(response => {
-                localStorage.setItem('_logged_user', JSON.stringify(response.data))
-                this.redirectHome()
-            }).catch(error => {
-                console.log(error.response)
-            })
+        this.service.authenticate({
+            email: this.state.email,
+            password: this.state.password
+        }).then(response => {
+            LocalStorageService.setItem('_logged_user', response.data)
+            this.redirectHome()
+        }).catch(error => {
+            errorMessage(error.response.data)
+        })
     }
 
     render() {
