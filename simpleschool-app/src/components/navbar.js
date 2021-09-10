@@ -22,7 +22,7 @@ function Navbar() {
 
                 <div id="navbarResponsive" className="collapse navbar-collapse">
                     <ul className="navbar-nav">
-                        <NavbarItem href="" label="Home" />
+                        <NavbarItem href="#/home" label="Home" />
                         <NavbarItem href="#/insert-user" label="Users" />
                         <NavbarItem href="" label="Students" />
                         <NavbarItem href="" label="Schools" />
