@@ -6,6 +6,24 @@ class GradesService extends ApiService {
         super('/api/grades')
     }
 
+    setSubjectList() {
+        return [
+            { label: 'Select...', value: '' },
+            { label: 'Philosophy', value: 1 },
+            { label: 'Mathmatics', value: 2 },
+            { label: 'Spanish', value: 3 },
+            { label: 'English', value: 4 },
+            { label: 'Chemical', value: 5 },
+            { label: 'Physical', value: 6 },
+            { label: 'Story', value: 7 },
+            { label: 'Music', value: 8 },
+            { label: 'Physical Education', value: 9 },
+            { label: 'Sociology', value: 10 },
+            { label: 'Geography', value: 11 },
+            { label: 'Art', value: 12 }
+        ]
+    }
+
     find(gradesFilter) {
         let params = `?user=${gradesFilter.user}`
 
@@ -22,6 +40,10 @@ class GradesService extends ApiService {
         }
 
         return this.get(params)
+    }
+
+    deleteAction(id) {
+        return this.delete(`/${id}`)
     }
 }
 

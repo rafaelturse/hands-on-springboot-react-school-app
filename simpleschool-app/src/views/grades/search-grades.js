@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import GradesService from '../../app/service/gradesService'
 import LocalStorageService from '../../app/service/localStorageService'
 
-import { errorMessage, successMessage, warningMessage } from '../../components/toastr'
+import * as messages from '../../components/toastr'
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
 import SelectMenu from '../../components/select-menu';
@@ -36,30 +36,34 @@ class SearchGrades extends React.Component {
                 this.setState({ grades: response.data })
 
                 if (response.data.length == 0) {
-                    warningMessage("No records found")
+                    messages.warningMessage("No records found")
                 }
             }).catch(error => {
                 this.setState({ grades: [] })
-                warningMessage("No records found")
+                messages.warningMessage("No records found")
             })
     }
 
+    edit = (id) => {
+
+    }
+
+    delete = (grades) => {
+        this.service.deleteAction(grades.id)
+        .then(response => {
+            const i = this.state.grades
+            const index = i.indexOf(grades)
+            i.splice(i, 1)
+            this.setState(i)
+
+            messages.successMessage("Grades deleted")
+        }).catch(error => {
+            messages.errorMessage("It was not possible to delete")
+        })
+    }
+
     render() {
-        const subjectOptions = [
-            { label: 'Select...', value: '' },
-            { label: 'Philosophy', value: 1 },
-            { label: 'Mathmatics', value: 2 },
-            { label: 'Spanish', value: 3 },
-            { label: 'English', value: 4 },
-            { label: 'Chemical', value: 5 },
-            { label: 'Physical', value: 6 },
-            { label: 'Story', value: 7 },
-            { label: 'Music', value: 8 },
-            { label: 'Physical Education', value: 9 },
-            { label: 'Sociology', value: 10 },
-            { label: 'Geography', value: 11 },
-            { label: 'Art', value: 12 }
-        ]
+        const subjectOptions = this.service.setSubjectList()
 
         return (
             <Card title="Search Grades">
@@ -111,9 +115,11 @@ class SearchGrades extends React.Component {
                 <div className="row mt-5">
                     <div className="col-lg-12">
                         <div className="bs-component">
-                            <GradesTable list={this.state.grades}>
-
-                            </GradesTable>
+                            <GradesTable 
+                                list={this.state.grades} 
+                                edit={this.edit}
+                                delete={this.delete}
+                            />
                         </div>
                     </div>
                 </div>

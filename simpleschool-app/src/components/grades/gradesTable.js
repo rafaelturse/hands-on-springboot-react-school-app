@@ -12,7 +12,18 @@ function GradesTable(props) {
                 <td>{i.grade3}</td>
                 <td>{i.grade4}</td>
                 <td>
-
+                    <div className="d-flex justify-content-center">
+                        <button 
+                            className="btn btn-info"
+                            onClick={e => props.edit(i.id)}>
+                            U
+                        </button>
+                        <button 
+                            className="btn btn-danger mx-2"
+                            onClick={e => props.delete(i)}>
+                            X
+                        </button>
+                    </div>
                 </td>
             </tr>
         )
