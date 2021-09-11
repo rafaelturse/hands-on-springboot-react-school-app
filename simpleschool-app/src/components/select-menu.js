@@ -2,9 +2,9 @@ import React from 'react';
 
 function SelectMenu(props) {
     const options = props.list.map(
-        option => {
+        (option, index) => {
             return (
-                <option value={option.value}>{option.label}</option>
+                <option key={index} value={option.value}>{option.label}</option>
             )
         }
     )
