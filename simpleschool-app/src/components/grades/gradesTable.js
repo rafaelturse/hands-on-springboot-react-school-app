@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Button } from 'primereact/button';
+
 function GradesTable(props) {
     const rows = props.list.map(i => {
         return (
@@ -13,16 +15,16 @@ function GradesTable(props) {
                 <td>{i.grade4}</td>
                 <td>
                     <div className="d-flex justify-content-center">
-                        <button 
-                            className="btn btn-info"
-                            onClick={e => props.edit(i.id)}>
-                            U
-                        </button>
-                        <button 
-                            className="btn btn-danger mx-2"
-                            onClick={e => props.delete(i)}>
-                            X
-                        </button>
+                        <Button
+                            className="p-button p-component p-button-rounded p-button-info p-button-text p-button-icon-only" 
+                            onClick={e => props.edit(i.id)}
+                            icon="pi pi-user-edit"
+                        />
+                        <Button
+                            className="p-button p-component p-button-rounded p-button-danger p-button-text p-button-icon-only" 
+                            onClick={e => props.delete(i)}
+                            icon="pi pi-times"
+                        />
                     </div>
                 </td>
             </tr>

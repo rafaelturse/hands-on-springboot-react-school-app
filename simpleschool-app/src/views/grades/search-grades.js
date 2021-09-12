@@ -6,12 +6,10 @@ import LocalStorageService from '../../app/service/localStorageService'
 import * as messages from '../../components/toastr'
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
-import SelectMenu from '../../components/select-menu';
 import GradesTable from '../../components/grades/gradesTable';
+import SelectMenu from '../../components/select-menu';
 
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import { confirmDialog } from 'primereact/confirmdialog';
-import { Button } from 'primereact/button';
 
 class SearchGrades extends React.Component {
     state = {
@@ -61,25 +59,10 @@ class SearchGrades extends React.Component {
             
             i.splice(i.indexOf(this.state.deleteItem), 1)
             
-            this.setState(this.setState({ grades: i }))
+            this.setState({ grades: i })
 
             messages.successMessage("Grades deleted")
         })
-
-        {/*
-        this.service.deleteAction(this.state.deleteItem.id)
-            .then(response => {
-                const i = this.state.deleteItem
-
-                i.splice(i.indexOf(this.state.deleteItem), 1)
-                
-                this.setState(this.setState({ grades: i }))
-
-                messages.successMessage("Grades deleted")
-            }).catch(error => {
-                messages.errorMessage("It was not possible to delete")
-            })
-        */}
     }
 
     deleteDialog = (grades) => {
@@ -89,8 +72,13 @@ class SearchGrades extends React.Component {
         })
     }
 
+    redirectInsertGrades = () => {
+        this.props.history.push('/insert-grades');
+    }
+
     render() {
         const subjectOptions = this.service.setSubjectList()
+        console.log(subjectOptions)
 
         return (
             <Card title="Search Grades">
@@ -133,7 +121,7 @@ class SearchGrades extends React.Component {
                             </div>
 
                             <div className="col-lg-12 d-flex justify-content-end">
-                                <button className="btn btn-success mt-3" onClick={this.insert}>Insert</button>
+                                <button className="btn btn-success mt-3" onClick={this.redirectInsertGrades}>Insert</button>
                                 <button className="btn btn-info mt-3 mx-2" onClick={this.find}>Search</button>
                             </div>
                         </div>
@@ -159,14 +147,6 @@ class SearchGrades extends React.Component {
                         icon="pi pi-exclamation-triangle"
                         accept={this.deleteAction}
                     />
-
-                    {/*
-                    <Button
-                        className="p-button p-component p-button-rounded p-button-danger p-button-text p-button-icon-only" 
-                        onClick={() => this.setState({ showConfirmDialog: true })}
-                        icon="pi pi-times"
-                    />
-                    */}
                 </div>
             </Card>
         )

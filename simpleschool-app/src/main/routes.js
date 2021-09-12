@@ -6,6 +6,7 @@ import Login from '../views/login/login';
 import Home from '../views/login/home';
 import InsertUser from '../views/user/insert-user';
 import SearchGrades from '../views/grades/search-grades';
+import InsertGrades from '../views/grades/insert-grades';
 
 function Routes() {
     return (
@@ -15,6 +16,7 @@ function Routes() {
                 <Route path="/home" component={Home} />
                 <Route path="/insert-user" component={InsertUser} />
                 <Route path="/search-grades" component={SearchGrades} />
+                <Route path="/insert-grades" component={InsertGrades} />
             </Switch>
         </HashRouter>
     )
