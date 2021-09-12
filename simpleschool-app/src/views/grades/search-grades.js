@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom'
 
 import GradesService from '../../app/service/gradesService'
 import LocalStorageService from '../../app/service/localStorageService'
@@ -10,12 +9,19 @@ import FormGroup from '../../components/form-group';
 import SelectMenu from '../../components/select-menu';
 import GradesTable from '../../components/grades/gradesTable';
 
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { Button } from 'primereact/button';
+
 class SearchGrades extends React.Component {
     state = {
         school: "",
         student: "",
         subject: "",
-        grades: []
+        grades: [],
+
+        showConfirmDialog: false,
+        deleteItem: ''
     }
 
     constructor() {
@@ -35,7 +41,7 @@ class SearchGrades extends React.Component {
             .then(response => {
                 this.setState({ grades: response.data })
 
-                if (response.data.length == 0) {
+                if (response.data.length === 0) {
                     messages.warningMessage("No records found")
                 }
             }).catch(error => {
@@ -48,17 +54,38 @@ class SearchGrades extends React.Component {
 
     }
 
-    delete = (grades) => {
-        this.service.deleteAction(grades.id)
+    deleteAction = () => {
+        this.service.deleteAction(this.state.deleteItem.id)
         .then(response => {
             const i = this.state.grades
-            const index = i.indexOf(grades)
-            i.splice(i, 1)
-            this.setState(i)
+            
+            i.splice(i.indexOf(this.state.deleteItem), 1)
+            
+            this.setState(this.setState({ grades: i }))
 
             messages.successMessage("Grades deleted")
-        }).catch(error => {
-            messages.errorMessage("It was not possible to delete")
+        })
+
+        {/*
+        this.service.deleteAction(this.state.deleteItem.id)
+            .then(response => {
+                const i = this.state.deleteItem
+
+                i.splice(i.indexOf(this.state.deleteItem), 1)
+                
+                this.setState(this.setState({ grades: i }))
+
+                messages.successMessage("Grades deleted")
+            }).catch(error => {
+                messages.errorMessage("It was not possible to delete")
+            })
+        */}
+    }
+
+    deleteDialog = (grades) => {
+        this.setState({ 
+            showConfirmDialog: true,
+            deleteItem: grades
         })
     }
 
@@ -115,13 +142,31 @@ class SearchGrades extends React.Component {
                 <div className="row mt-5">
                     <div className="col-lg-12">
                         <div className="bs-component">
-                            <GradesTable 
-                                list={this.state.grades} 
+                            <GradesTable
+                                list={this.state.grades}
                                 edit={this.edit}
-                                delete={this.delete}
+                                delete={this.deleteDialog}
                             />
                         </div>
                     </div>
+                </div>
+                <div>
+                    <ConfirmDialog
+                        visible={this.state.showConfirmDialog}
+                        onHide={() => this.setState({ showConfirmDialog: false })}
+                        message="Are you sure you want to proceed?"
+                        header="Confirmation"
+                        icon="pi pi-exclamation-triangle"
+                        accept={this.deleteAction}
+                    />
+
+                    {/*
+                    <Button
+                        className="p-button p-component p-button-rounded p-button-danger p-button-text p-button-icon-only" 
+                        onClick={() => this.setState({ showConfirmDialog: true })}
+                        icon="pi pi-times"
+                    />
+                    */}
                 </div>
             </Card>
         )
