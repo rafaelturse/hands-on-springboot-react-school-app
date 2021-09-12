@@ -131,11 +131,11 @@ class InsertUser extends React.Component {
                                         onChange={e => this.setState({ passwordConfirm: e.target.value })}
                                         type="password"
                                     />
-                                </FormGroup></div>
-
-                            <div className="col-lg-12 d-flex justify-content-end">
-                                <button className="btn btn-danger mt-3 mx-2" onClick={this.redirectLogin}>Cancel</button>
-                                <button className="btn btn-success mt-3" onClick={this.insert}>Save</button>
+                                </FormGroup>
+                            </div>
+                            <div className="col-lg-12 d-flex justify-content-end mt-3">
+                                <button className="btn btn-danger mx-2" onClick={this.redirectLogin}>Cancel</button>
+                                <button className="btn btn-success" onClick={this.insert}>Save</button>
                             </div>
                         </div>
                     </div>

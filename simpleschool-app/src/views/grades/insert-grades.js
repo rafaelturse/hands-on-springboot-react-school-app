@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 import GradeService from '../../app/service/gradesService'
 import SchoolService from '../../app/service/schoolService'
 
+import LocalStorageService from '../../app/service/localStorageService'
+
 import { errorMessage, successMessage } from '../../components/toastr'
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
@@ -11,9 +13,17 @@ import SelectMenu from '../../components/select-menu';
 
 class InsertGrades extends React.Component {
     state = {
-        school: "",
+        school: '',
         schools: [],
-        schoolOptions: []
+        schoolOptions: [],
+        user: '',
+        student: '',
+        subject: '',
+        subjects: [],
+        grade1: '',
+        grade2: '',
+        grade3: '',
+        grade4: ''
     }
 
     constructor() {
@@ -41,12 +51,72 @@ class InsertGrades extends React.Component {
             .then(response => {
                 this.setState({ schools: response.data })
                 this.setState({ schoolOptions: this.schoolOptions() })
-                console.log(this.state.schoolOptions)
+            })
+    }
+
+    getSubjects = () => {
+        this.setState({ subjects: this.service.setSubjectList() })
+    }
+
+    validate() {
+        const messages = []
+
+        if (!this.state.school) {
+            messages.push("School is required")
+        }
+
+        if (!this.state.student) {
+            messages.push("Student is required")
+        }
+
+        if (!this.state.subject) {
+            messages.push("Subject is required")
+        }
+
+        return messages;
+    }
+
+    insert = () => {
+        const messages = this.validate()
+
+        if (messages && messages.length > 0) {
+            messages.forEach((message, i) => {
+                errorMessage(message)
+            })
+
+            return false
+        }
+
+        const grades = {
+            user: this.state.user,
+            school: this.state.school,
+            student: this.state.student,
+            subject: this.state.subject,
+            grade1: this.state.grade1,
+            grade2: this.state.grade2,
+            grade3: this.state.grade3,
+            grade4: this.state.grade4
+        }
+
+        this.service.save(grades)
+            .then(response => {
+                successMessage("Registered grades")
+                this.redirectSearchGrades()
+            })
+            .catch(error => {
+                errorMessage(error.response.data)
             })
     }
 
     componentDidMount() {
         this.getSchools()
+        this.getSubjects()
+
+        this.setState({user: LocalStorageService.getItem('_logged_user').id})
+    }
+
+    redirectSearchGrades = () => {
+        this.props.history.push('/search-grades');
     }
 
     render() {
@@ -56,19 +126,96 @@ class InsertGrades extends React.Component {
                     <div className="col-lg-12">
                         <div className="bs-content">
                             <div className="mt-2">
-                                <FormGroup label="School:" htmlFor="inputSchool">
+                                <FormGroup label="School: *" htmlFor="inputSchool">
                                     <SelectMenu
                                         id="inputSchool"
+                                        className="form-control mt-1"
                                         list={this.state.schoolOptions}
                                         value={this.state.school}
                                         onChange={e => this.setState({ school: e.target.value })}
                                     />
                                 </FormGroup>
                             </div>
+                            <div className="mt-2">
+                                <FormGroup label="Student: *" htmlFor="inputStudent">
+                                    <input
+                                        id="inputStudent"
+                                        className="form-control mt-1"
+                                        name="student"
+                                        value={this.state.student}
+                                        onChange={e => this.setState({ student: e.target.value })}
+                                        type="text"
+                                    />
+                                </FormGroup>
+                            </div>
+                            <div className="mt-2">
+                                <FormGroup label="Subject: *" htmlFor="inputSubject">
+                                    <SelectMenu
+                                        id="inputSubject"
+                                        list={this.state.subjects}
+                                        value={this.state.subject}
+                                        onChange={e => this.setState({ subject: e.target.value })}
+                                    />
+                                </FormGroup>
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-3 mt-2">
+                                    <FormGroup label="Grade 1:" htmlFor="inputGrade1">
+                                        <input
+                                            id="inputGrade1"
+                                            className="form-control mt-1"
+                                            name="grade1"
+                                            value={this.state.grade1}
+                                            onChange={e => this.setState({ grade1: e.target.value })}
+                                            type="text"
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-lg-3 mt-2">
+                                    <FormGroup label="Grade 2:" htmlFor="inputGrade2">
+                                        <input
+                                            id="inputGrade2"
+                                            className="form-control mt-1"
+                                            name="grade2"
+                                            value={this.state.grade2}
+                                            onChange={e => this.setState({ grade2: e.target.value })}
+                                            type="text"
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-lg-3 mt-2">
+                                    <FormGroup label="Grade 3:" htmlFor="inputGrade3">
+                                        <input
+                                            id="inputGrade3"
+                                            className="form-control mt-1"
+                                            name="grade3"
+                                            value={this.state.grade3}
+                                            onChange={e => this.setState({ grade3: e.target.value })}
+                                            type="text"
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-lg-3 mt-2">
+                                    <FormGroup label="Grade 4:" htmlFor="inputGrade4">
+                                        <input
+                                            id="inputGrade4"
+                                            className="form-control mt-1"
+                                            name="grade4"
+                                            value={this.state.grade4}
+                                            onChange={e => this.setState({ grade4: e.target.value })}
+                                            type="text"
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-lg-12 d-flex justify-content-end mt-3">
+                                    <button className="btn btn-danger mx-2" onClick={this.redirectSearchGrades}>Cancel</button>
+                                    <button className="btn btn-success" onClick={this.insert}>Save</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </Card>
+                    </div >
+                </div >
+            </Card >
         )
     }
 }

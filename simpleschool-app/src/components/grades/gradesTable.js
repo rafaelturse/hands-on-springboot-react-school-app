@@ -7,7 +7,7 @@ function GradesTable(props) {
         return (
             <tr key={i.id}>
                 <td>{i.subject}</td>
-                <td>{i.student.name}</td>
+                <td>{i.student}</td>
                 <td>{i.school.name}</td>
                 <td>{i.grade1}</td>
                 <td>{i.grade2}</td>

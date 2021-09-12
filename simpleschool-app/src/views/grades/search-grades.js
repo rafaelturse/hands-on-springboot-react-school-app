@@ -78,7 +78,6 @@ class SearchGrades extends React.Component {
 
     render() {
         const subjectOptions = this.service.setSubjectList()
-        console.log(subjectOptions)
 
         return (
             <Card title="Search Grades">

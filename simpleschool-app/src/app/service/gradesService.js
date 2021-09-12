@@ -45,6 +45,10 @@ class GradesService extends ApiService {
     deleteAction(id) {
         return this.delete(`/${id}`)
     }
+
+    save(grades) {
+        return this.post('/', grades);
+    }
 }
 
 export default GradesService;
