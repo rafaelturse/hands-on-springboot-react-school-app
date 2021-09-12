@@ -49,7 +49,7 @@ class SearchGrades extends React.Component {
     }
 
     edit = (id) => {
-
+        this.redirectUpdateGrades(id)
     }
 
     deleteAction = () => {
@@ -70,6 +70,10 @@ class SearchGrades extends React.Component {
             showConfirmDialog: true,
             deleteItem: grades
         })
+    }
+
+    redirectUpdateGrades = (id) => {
+        this.props.history.push(`/insert-grades/${id}`);
     }
 
     redirectInsertGrades = () => {

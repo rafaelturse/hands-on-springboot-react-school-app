@@ -16,7 +16,7 @@ function Routes() {
                 <Route path="/home" component={Home} />
                 <Route path="/insert-user" component={InsertUser} />
                 <Route path="/search-grades" component={SearchGrades} />
-                <Route path="/insert-grades" component={InsertGrades} />
+                <Route path="/insert-grades/:id" component={InsertGrades} />
             </Switch>
         </HashRouter>
     )

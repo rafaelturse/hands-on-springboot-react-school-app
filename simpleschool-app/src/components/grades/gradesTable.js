@@ -9,11 +9,12 @@ function GradesTable(props) {
                 <td>{i.subject}</td>
                 <td>{i.student}</td>
                 <td>{i.school.name}</td>
-                <td>{i.grade1}</td>
-                <td>{i.grade2}</td>
-                <td>{i.grade3}</td>
-                <td>{i.grade4}</td>
-                <td>
+                <td className="text-center">{i.grade1}</td>
+                <td className="text-center">{i.grade2}</td>
+                <td className="text-center">{i.grade3}</td>
+                <td className="text-center">{i.grade4}</td>
+                <td className="text-center">{(i.grade1 + i.grade2 + i.grade3 + i.grade4)/4}</td>
+                <td className="text-center">
                     <div className="d-flex justify-content-center">
                         <Button
                             className="p-button p-component p-button-rounded p-button-info p-button-text p-button-icon-only" 
@@ -33,7 +34,7 @@ function GradesTable(props) {
 
     return (
         <table className="table table-hover">
-            <thead>
+            <thead className="text-center">
                 <tr>
                     <th scope="col">Subject</th>
                     <th scope="col">Student</th>
@@ -42,6 +43,7 @@ function GradesTable(props) {
                     <th scope="col">Grade 2</th>
                     <th scope="col">Grade 3</th>
                     <th scope="col">Grade 4</th>
+                    <th scope="col">Average</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>

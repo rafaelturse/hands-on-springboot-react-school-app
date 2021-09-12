@@ -9,18 +9,18 @@ class GradesService extends ApiService {
     setSubjectList() {
         return [
             { label: 'Select...', value: '' },
-            { label: 'Philosophy', value: 1 },
-            { label: 'Mathmatics', value: 2 },
-            { label: 'Spanish', value: 3 },
-            { label: 'English', value: 4 },
-            { label: 'Chemical', value: 5 },
-            { label: 'Physical', value: 6 },
-            { label: 'Story', value: 7 },
-            { label: 'Music', value: 8 },
-            { label: 'Physical Education', value: 9 },
-            { label: 'Sociology', value: 10 },
-            { label: 'Geography', value: 11 },
-            { label: 'Art', value: 12 }
+            { label: 'Philosophy', value: 0 },
+            { label: 'Mathmatics', value: 1 },
+            { label: 'Spanish', value: 2 },
+            { label: 'English', value: 3 },
+            { label: 'Chemical', value: 4 },
+            { label: 'Physical', value: 5 },
+            { label: 'Story', value: 6 },
+            { label: 'Music', value: 7 },
+            { label: 'Physical Education', value: 8 },
+            { label: 'Sociology', value: 9 },
+            { label: 'Geography', value: 10 },
+            { label: 'Art', value: 11 }
         ]
     }
 
@@ -42,12 +42,20 @@ class GradesService extends ApiService {
         return this.get(params)
     }
 
+    findById(id) {
+        return this.get(`/${id}`)
+    }
+
     deleteAction(id) {
         return this.delete(`/${id}`)
     }
 
     save(grades) {
         return this.post('/', grades);
+    }
+
+    update(grades) {
+        return this.put(`/${grades.id}`, grades);
     }
 }
 

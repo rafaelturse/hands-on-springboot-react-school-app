@@ -6,13 +6,14 @@ import SchoolService from '../../app/service/schoolService'
 
 import LocalStorageService from '../../app/service/localStorageService'
 
-import { errorMessage, successMessage } from '../../components/toastr'
+import * as m from '../../components/toastr'
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
 import SelectMenu from '../../components/select-menu';
 
 class InsertGrades extends React.Component {
     state = {
+        id: '',
         school: '',
         schools: [],
         schoolOptions: [],
@@ -37,9 +38,9 @@ class InsertGrades extends React.Component {
 
         options.push({ label: 'Select...', value: '' })
 
-        const schools = this.state.schools.map(
+        this.state.schools.map(
             (school) => {
-                options.push({ label: school.name, value: school.id })
+                return options.push({ label: school.name, value: school.id })
             }
         )
 
@@ -81,7 +82,7 @@ class InsertGrades extends React.Component {
 
         if (messages && messages.length > 0) {
             messages.forEach((message, i) => {
-                errorMessage(message)
+                m.errorMessage(message)
             })
 
             return false
@@ -100,19 +101,64 @@ class InsertGrades extends React.Component {
 
         this.service.save(grades)
             .then(response => {
-                successMessage("Registered grades")
+                m.successMessage("Registered grades")
                 this.redirectSearchGrades()
             })
             .catch(error => {
-                errorMessage(error.response.data)
+                m.errorMessage(error.response.data)
+            })
+    }
+
+    update = () => {
+        const messages = this.validate()
+
+        if (messages && messages.length > 0) {
+            messages.forEach((message, i) => {
+                m.errorMessage(message)
+            })
+
+            return false
+        }
+
+        const grades = {
+            id: this.state.id,
+            user: this.state.user,
+            school: this.state.school,
+            student: this.state.student,
+            subject: this.state.subject,
+            grade1: this.state.grade1,
+            grade2: this.state.grade2,
+            grade3: this.state.grade3,
+            grade4: this.state.grade4
+        }
+
+        console.log(grades)
+        this.service.update(grades)
+            .then(response => {
+                m.successMessage("Updated grades")
+                this.redirectSearchGrades()
+            })
+            .catch(error => {
+                m.errorMessage(error.response.data)
             })
     }
 
     componentDidMount() {
+        const params = this.props.match.params
+
         this.getSchools()
         this.getSubjects()
+        this.setState({ user: LocalStorageService.getItem('_logged_user').id })
 
-        this.setState({user: LocalStorageService.getItem('_logged_user').id})
+        if (params.id) {
+            this.service.findById(params.id)
+                .then(response => {
+                    this.setState({ ...response.data })
+                })
+                .catch(error => {
+                    m.errorMessage(error.response.data)
+                })
+        }
     }
 
     redirectSearchGrades = () => {
@@ -210,6 +256,7 @@ class InsertGrades extends React.Component {
                                 <div className="col-lg-12 d-flex justify-content-end mt-3">
                                     <button className="btn btn-danger mx-2" onClick={this.redirectSearchGrades}>Cancel</button>
                                     <button className="btn btn-success" onClick={this.insert}>Save</button>
+                                    <button className="btn btn-info" onClick={this.update}>Update</button>
                                 </div>
                             </div>
                         </div>
