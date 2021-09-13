@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const httpClient = axios.create({
-    baseURL: 'http://rt-simpleschool-webapp.herokuapp.com'
+    baseURL: ' https://rt-simpleschool-webapp.herokuapp.com/'
 })
 
 class ApiService {
