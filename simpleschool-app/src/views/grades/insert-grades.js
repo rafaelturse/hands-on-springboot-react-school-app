@@ -24,7 +24,8 @@ class InsertGrades extends React.Component {
         grade1: '',
         grade2: '',
         grade3: '',
-        grade4: ''
+        grade4: '',
+        isUpdate : false
     }
 
     constructor() {
@@ -92,7 +93,7 @@ class InsertGrades extends React.Component {
             user: this.state.user,
             school: this.state.school,
             student: this.state.student,
-            subject: this.state.subject,
+            subject: this.state.subject - 1,
             grade1: this.state.grade1,
             grade2: this.state.grade2,
             grade3: this.state.grade3,
@@ -125,7 +126,7 @@ class InsertGrades extends React.Component {
             user: this.state.user,
             school: this.state.school,
             student: this.state.student,
-            subject: this.state.subject,
+            subject: this.state.subject - 1,
             grade1: this.state.grade1,
             grade2: this.state.grade2,
             grade3: this.state.grade3,
@@ -153,7 +154,7 @@ class InsertGrades extends React.Component {
         if (params.id) {
             this.service.findById(params.id)
                 .then(response => {
-                    this.setState({ ...response.data })
+                    this.setState({ ...response.data, isUpdate:true })
                 })
                 .catch(error => {
                     m.errorMessage(error.response.data)
@@ -167,7 +168,7 @@ class InsertGrades extends React.Component {
 
     render() {
         return (
-            <Card title="Insert Grades">
+            <Card title={this.state.isUpdate ? 'Update Grades' : 'Insert Grades'}>
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="bs-content">
@@ -255,8 +256,12 @@ class InsertGrades extends React.Component {
                                 </div>
                                 <div className="col-lg-12 d-flex justify-content-end mt-3">
                                     <button className="btn btn-danger mx-2" onClick={this.redirectSearchGrades}>Cancel</button>
-                                    <button className="btn btn-success" onClick={this.insert}>Save</button>
-                                    <button className="btn btn-info" onClick={this.update}>Update</button>
+                                    {this.state.isUpdate ? 
+                                    (
+                                        <button className="btn btn-info" onClick={this.update}>Update</button>
+                                    ) : (
+                                        <button className="btn btn-success" onClick={this.insert}>Save</button>
+                                    )}
                                 </div>
                             </div>
                         </div>

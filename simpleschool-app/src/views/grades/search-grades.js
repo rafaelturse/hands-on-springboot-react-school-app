@@ -1,4 +1,7 @@
 import React from 'react';
+import { DataTable } from 'primereact/datatable';
+import { Button } from 'primereact/button';
+import { Tooltip } from 'primereact/tooltip';
 
 import GradesService from '../../app/service/gradesService'
 import LocalStorageService from '../../app/service/localStorageService'
@@ -17,6 +20,9 @@ class SearchGrades extends React.Component {
         student: "",
         subject: "",
         grades: [],
+
+        cols: [],
+        exportPdf: [],
 
         showConfirmDialog: false,
         deleteItem: ''
@@ -54,19 +60,19 @@ class SearchGrades extends React.Component {
 
     deleteAction = () => {
         this.service.deleteAction(this.state.deleteItem.id)
-        .then(response => {
-            const i = this.state.grades
-            
-            i.splice(i.indexOf(this.state.deleteItem), 1)
-            
-            this.setState({ grades: i })
+            .then(response => {
+                const i = this.state.grades
 
-            messages.successMessage("Grades deleted")
-        })
+                i.splice(i.indexOf(this.state.deleteItem), 1)
+
+                this.setState({ grades: i })
+
+                messages.successMessage("Grades deleted")
+            })
     }
 
     deleteDialog = (grades) => {
-        this.setState({ 
+        this.setState({
             showConfirmDialog: true,
             deleteItem: grades
         })
@@ -82,6 +88,49 @@ class SearchGrades extends React.Component {
 
     render() {
         const subjectOptions = this.service.setSubjectList()
+
+        const exportExcel = () => {
+            const options = []
+            this.state.grades.map((i) => {
+                return options.push({
+                    subject: i.subject,
+                    student: i.student,
+                    school: i.school.name,
+                    grades1: i.grade1,
+                    grades2: i.grade2,
+                    grades3: i.grade3,
+                    grades4: i.grade4,
+                    average: (i.grade1 + i.grade2 + i.grade3 + i.grade4) / 4
+                })
+            })
+
+            import('xlsx').then(xlsx => {
+                const worksheet = xlsx.utils.json_to_sheet(options);
+                const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+                const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+                saveAsExcelFile(excelBuffer, 'grades');
+            });
+        }
+
+        const saveAsExcelFile = (buffer, fileName) => {
+            import('file-saver').then(FileSaver => {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], { type: EXCEL_TYPE });
+                FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
+            });
+        }
+
+        const header = (
+            <div className="p-d-flex p-ai-center export-buttons">
+                <Button
+                    type="button"
+                    icon="pi pi-file-excel"
+                    onClick={exportExcel}
+                    className="p-button-success p-mr-2"
+                    data-pr-tooltip="XLS" />
+            </div>
+        )
 
         return (
             <Card title="Search Grades">
@@ -133,7 +182,17 @@ class SearchGrades extends React.Component {
                 <div className="row mt-5">
                     <div className="col-lg-12">
                         <div className="bs-component">
+                            {this.state.grades.length > 0 ?
+                                (
+                                    <div>
+                                        <Tooltip target=".export-buttons>button" position="top" render="false" />
+                                        <DataTable ref={this.state.grades} value={this.state.grades} header={header} dataKey="id" selectionMode="multiple" />
+                                    </div>
+                                ) : (<div />)
+                            }
+
                             <GradesTable
+                                id="table-grades"
                                 list={this.state.grades}
                                 edit={this.edit}
                                 delete={this.deleteDialog}
