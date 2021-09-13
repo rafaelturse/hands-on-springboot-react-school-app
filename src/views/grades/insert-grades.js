@@ -133,7 +133,6 @@ class InsertGrades extends React.Component {
             grade4: this.state.grade4
         }
 
-        console.log(grades)
         this.service.update(grades)
             .then(response => {
                 m.successMessage("Updated grades")

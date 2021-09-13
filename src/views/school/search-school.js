@@ -3,26 +3,19 @@ import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
 
-import GradesService from '../../app/service/gradesService'
-import LocalStorageService from '../../app/service/localStorageService'
+import SchoolService from '../../app/service/schoolService'
 
 import * as messages from '../../components/toastr'
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
-import GradesTable from '../../components/grades/gradesTable';
-import SelectMenu from '../../components/select-menu';
+import SchoolTable from '../../components/school/schoolTable';
 
 import { ConfirmDialog } from 'primereact/confirmdialog';
 
-class SearchGrades extends React.Component {
+class SearchSchools extends React.Component {
     state = {
         school: "",
-        student: "",
-        subject: "",
-        grades: [],
-
-        cols: [],
-        exportPdf: [],
+        schools: [],
 
         showConfirmDialog: false,
         deleteItem: ''
@@ -30,26 +23,20 @@ class SearchGrades extends React.Component {
 
     constructor() {
         super();
-        this.service = new GradesService();
+        this.service = new SchoolService();
     }
 
-    find = () => {
-        const gradesFilter = {
-            school: this.state.school,
-            student: this.state.student,
-            subject: this.state.subject,
-            user: LocalStorageService.getItem('_logged_user').id
-        }
 
-        this.service.find(gradesFilter)
+    find = () => {
+        this.service.find(this.state.school)
             .then(response => {
-                this.setState({ grades: response.data })
+                this.setState({ schools: response.data })
 
                 if (response.data.length === 0) {
                     messages.warningMessage("No records found")
                 }
             }).catch(error => {
-                this.setState({ grades: [] })
+                this.setState({ schools: [] })
                 messages.warningMessage("No records found")
             })
     }
@@ -61,54 +48,38 @@ class SearchGrades extends React.Component {
     deleteAction = () => {
         this.service.deleteAction(this.state.deleteItem.id)
             .then(response => {
-                const i = this.state.grades
+                const i = this.state.schools
 
                 i.splice(i.indexOf(this.state.deleteItem), 1)
 
-                this.setState({ grades: i })
+                this.setState({ schools: i })
 
-                messages.successMessage("Grades deleted")
+                messages.successMessage("Schools deleted")
             })
     }
 
-    deleteDialog = (grades) => {
+    deleteDialog = (schools) => {
         this.setState({
             showConfirmDialog: true,
-            deleteItem: grades
+            deleteItem: schools
         })
     }
 
-    redirectUpdateGrades = (id) => {
-        this.props.history.push(`/insert-grades/${id}`);
+    redirectUpdateSchool = (id) => {
+        this.props.history.push(`/insert-school/${id}`);
     }
 
-    redirectInsertGrades = () => {
-        this.props.history.push('/insert-grades');
+    redirectInsertSchool = () => {
+        this.props.history.push('/insert-school');
     }
 
     render() {
-        const subjectOptions = this.service.setSubjectList()
-
         const exportExcel = () => {
-            const options = []
-            this.state.grades.map((i) => {
-                return options.push({
-                    subject: i.subject,
-                    student: i.student,
-                    school: i.school.name,
-                    grades1: i.grade1,
-                    grades2: i.grade2,
-                    grades3: i.grade3,
-                    grades4: i.grade4,
-                    average: (i.grade1 + i.grade2 + i.grade3 + i.grade4) / 4
-                })
-            })
-
             import('xlsx').then(xlsx => {
-                const worksheet = xlsx.utils.json_to_sheet(options);
+                const worksheet = xlsx.utils.json_to_sheet(this.state.schools);
                 const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
                 const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-                saveAsExcelFile(excelBuffer, 'grades');
+                saveAsExcelFile(excelBuffer, 'schools');
             });
         }
 
@@ -133,7 +104,7 @@ class SearchGrades extends React.Component {
         )
 
         return (
-            <Card title="Search Grades">
+            <Card title="Search Schools">
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="bs-content">
@@ -149,31 +120,9 @@ class SearchGrades extends React.Component {
                                     />
                                 </FormGroup>
                             </div>
-                            <div className="mt-2">
-                                <FormGroup label="Student:" htmlFor="inputStudent">
-                                    <input
-                                        id="inputStudent"
-                                        className="form-control mt-1"
-                                        name="student"
-                                        value={this.state.student}
-                                        onChange={e => this.setState({ student: e.target.value })}
-                                        type="text"
-                                    />
-                                </FormGroup>
-                            </div>
-                            <div className="mt-2">
-                                <FormGroup label="Subject:" htmlFor="inputSubject">
-                                    <SelectMenu
-                                        id="inputSubject"
-                                        list={subjectOptions}
-                                        value={this.state.subject}
-                                        onChange={e => this.setState({ subject: e.target.value })}
-                                    />
-                                </FormGroup>
-                            </div>
 
                             <div className="col-lg-12 d-flex justify-content-end">
-                                <button className="btn btn-success mt-3" onClick={this.redirectInsertGrades}>Insert</button>
+                                <button className="btn btn-success mt-3" onClick={this.redirectInsertSchool}>Insert</button>
                                 <button className="btn btn-info mt-3 mx-2" onClick={this.find}>Search</button>
                             </div>
                         </div>
@@ -182,18 +131,18 @@ class SearchGrades extends React.Component {
                 <div className="row mt-5">
                     <div className="col-lg-12">
                         <div className="bs-component">
-                            {this.state.grades.length > 0 ?
+                            {this.state.schools.length > 0 ?
                                 (
                                     <div>
                                         <Tooltip target=".export-buttons>button" position="top" render="false" />
-                                        <DataTable value={this.state.grades} header={header} dataKey="id" selectionMode="multiple" />
+                                        <DataTable value={this.state.schools} header={header} dataKey="id" selectionMode="multiple" />
                                     </div>
                                 ) : (<div />)
                             }
 
-                            <GradesTable
-                                id="table-grades"
-                                list={this.state.grades}
+                            <SchoolTable
+                                id="table-schools"
+                                list={this.state.schools}
                                 edit={this.edit}
                                 delete={this.deleteDialog}
                             />
@@ -215,4 +164,4 @@ class SearchGrades extends React.Component {
     }
 }
 
-export default SearchGrades;
+export default SearchSchools;

@@ -71,8 +71,10 @@ class Login extends React.Component {
                                                 />
                                             </FormGroup>
 
-                                            <button className="btn btn-success" onClick={this.signIn}>Sign In</button>
-                                            <button className="btn btn-danger" onClick={this.redirectInsertUser}>Sign Up</button>
+                                            <div className="col-lg-12 d-flex justify-content-end mt-3">
+                                                <button className="btn btn-success" onClick={this.signIn}>Sign In</button>
+                                                <button className="btn btn-danger" onClick={this.redirectInsertUser}>Sign Up</button>
+                                            </div>
                                         </fieldset>
                                     </div>
                                 </div>
