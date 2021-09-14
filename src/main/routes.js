@@ -2,26 +2,25 @@ import React from 'react';
 
 import { Route, Switch, HashRouter, Redirect } from 'react-router-dom';
 
-import AuthService from '../app/service/AuthService';
+import AuthService from '../app/service/AuthService'
 
-import InsertGrades from '../views/grades/insert-grades';
-import SearchGrades from '../views/grades/search-grades';
-import UpdateGrades from '../views/grades/insert-grades';
+import InsertGrades from '../views/grades/insert-grades'
+import SearchGrades from '../views/grades/search-grades'
+import UpdateGrades from '../views/grades/insert-grades'
 
-import Home from '../views/login/home';
+import Home from '../views/login/home'
+import Login from '../views/login/login'
 
-import Login from '../views/login/login';
+import InsertSchool from '../views/school/insert-school'
+import SearchSchool from '../views/school/search-school'
+import UpdateSchool from '../views/school/insert-school'
 
-import InsertSchool from '../views/school/insert-school';
-import SearchSchool from '../views/school/search-school';
-import UpdateSchool from '../views/school/insert-school';
-
-import InsertUser from '../views/user/insert-user';
+import InsertUser from '../views/user/insert-user'
 
 function AuthenticatedRoute({ component: Component, ...props }) {
     return (
         <Route {...props} render={(componentProps) => {
-            if (AuthService.isAuthenticatedUser()) {
+            if (isAuthenticatedUser()) {
                 return (
                     <Component {...componentProps} />
                 )
@@ -40,6 +39,10 @@ function AuthenticatedRoute({ component: Component, ...props }) {
     )
 }
 
+const isAuthenticatedUser = () => {
+    return AuthService.isAuthenticatedUser()
+}
+
 function Routes() {
     return (
         <HashRouter>
@@ -49,14 +52,15 @@ function Routes() {
                 <AuthenticatedRoute path="/insert-grades" component={InsertGrades} />
 
                 <AuthenticatedRoute path="/home" component={Home} />
-
-                <Route path="/login" component={Login} />
+                
+                <Route path= {isAuthenticatedUser() ? "/home" : "/login" } component={Login} />
 
                 <AuthenticatedRoute path="/search-school" component={SearchSchool} />
                 <AuthenticatedRoute path="/insert-school/:id" component={UpdateSchool} />
                 <AuthenticatedRoute path="/insert-school" component={InsertSchool} />
 
                 <Route path="/insert-user" component={InsertUser} />
+                <Route path="/" component={isAuthenticatedUser() ? Home : Login} />
             </Switch>
         </HashRouter>
     )

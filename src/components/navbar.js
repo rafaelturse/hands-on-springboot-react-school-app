@@ -6,10 +6,15 @@ import AuthService from '../app/service/AuthService';
 const logout = () => {
     window.location.reload()
     AuthService.removeAuthenticatedUser()
+    redirectLogin()
 }
 
 const isAuthenticatedUser = () => {
     return AuthService.isAuthenticatedUser()
+}
+
+const redirectLogin = () => {
+    this.props.history.push('/login');
 }
 
 function Navbar() {
