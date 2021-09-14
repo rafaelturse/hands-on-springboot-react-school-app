@@ -9,6 +9,7 @@ import FormGroup from '../../components/form-group';
 
 class InsertSchool extends React.Component {
     state = {
+        id: '',
         school: '',
         isUpdate: false
     }
@@ -39,10 +40,12 @@ class InsertSchool extends React.Component {
             return false
         }
 
-        this.service.save(this.state.school)
+        const school = 
+
+        this.service.save({school: this.state.school})
             .then(response => {
                 m.successMessage("Registered school")
-                this.redirectSearchGrades()
+                this.redirectSearchSchool()
             })
             .catch(error => {
                 m.errorMessage(error.response.data)
@@ -68,7 +71,7 @@ class InsertSchool extends React.Component {
         this.service.update(schoolUpdate)
             .then(response => {
                 m.successMessage("Updated school")
-                this.redirectSearchGrades()
+                this.redirectSearchSchool()
             })
             .catch(error => {
                 m.errorMessage(error.response.data)

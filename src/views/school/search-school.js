@@ -42,7 +42,7 @@ class SearchSchools extends React.Component {
     }
 
     edit = (id) => {
-        this.redirectUpdateGrades(id)
+        this.redirectUpdateSchool(id)
     }
 
     deleteAction = () => {

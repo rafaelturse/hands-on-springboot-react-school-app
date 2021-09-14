@@ -18,12 +18,12 @@ class SchoolService extends ApiService {
         return this.delete(`/${id}`)
     }
 
-    save(schoo) {
-        return this.post('/', schoo);
+    save(school) {
+        return this.post('/', school);
     }
 
-    update(schoo) {
-        return this.put(`/${schoo.id}`, schoo);
+    update(school) {
+        return this.put(`/${school.id}`, school);
     }
 }
 
