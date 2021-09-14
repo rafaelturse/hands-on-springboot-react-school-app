@@ -40,8 +40,6 @@ class InsertSchool extends React.Component {
             return false
         }
 
-        const school = 
-
         this.service.save({school: this.state.school})
             .then(response => {
                 m.successMessage("Registered school")

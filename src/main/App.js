@@ -1,7 +1,11 @@
 import React from 'react';
 
+import AuthenticationProvider from './AuthenticationProvider'
+
 import Routes from './routes';
+
 import Navbar from '../components/navbar'
+
 import 'toastr/build/toastr.min.js'
 
 import 'bootswatch/dist/flatly/bootstrap.css'
@@ -15,14 +19,14 @@ import 'primeicons/primeicons.css'
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <AuthenticationProvider>
         <Navbar />
         <div className="container">
           <Routes />
         </div>
-      </div>
+      </AuthenticationProvider>
     )
   }
 }
 
-export default App;
+export default App

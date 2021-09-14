@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Route, Switch, HashRouter } from 'react-router-dom';
+import { Route, Switch, HashRouter, Redirect } from 'react-router-dom';
+
+import AuthService from '../app/service/AuthService';
 
 import InsertGrades from '../views/grades/insert-grades';
 import SearchGrades from '../views/grades/search-grades';
@@ -16,21 +18,43 @@ import UpdateSchool from '../views/school/insert-school';
 
 import InsertUser from '../views/user/insert-user';
 
+function AuthenticatedRoute({ component: Component, ...props }) {
+    return (
+        <Route {...props} render={(componentProps) => {
+            if (AuthService.isAuthenticatedUser()) {
+                return (
+                    <Component {...componentProps} />
+                )
+            } else {
+                return (
+                    <Redirect
+                        to={{
+                            pathname: '/login',
+                            state: { from: componentProps.location }
+                        }}
+                    />
+                )
+            }
+        }} 
+        />
+    )
+}
+
 function Routes() {
     return (
         <HashRouter>
             <Switch>
-                <Route path="/search-grades" component={SearchGrades} />
-                <Route path="/insert-grades/:id" component={UpdateGrades} />
-                <Route path="/insert-grades" component={InsertGrades} />
+                <AuthenticatedRoute path="/search-grades" component={SearchGrades} />
+                <AuthenticatedRoute path="/insert-grades/:id" component={UpdateGrades} />
+                <AuthenticatedRoute path="/insert-grades" component={InsertGrades} />
 
-                <Route path="/home" component={Home} />
-                
+                <AuthenticatedRoute path="/home" component={Home} />
+
                 <Route path="/login" component={Login} />
 
-                <Route path="/search-school" component={SearchSchool} />
-                <Route path="/insert-school/:id" component={UpdateSchool} />
-                <Route path="/insert-school" component={InsertSchool} />
+                <AuthenticatedRoute path="/search-school" component={SearchSchool} />
+                <AuthenticatedRoute path="/insert-school/:id" component={UpdateSchool} />
+                <AuthenticatedRoute path="/insert-school" component={InsertSchool} />
 
                 <Route path="/insert-user" component={InsertUser} />
             </Switch>

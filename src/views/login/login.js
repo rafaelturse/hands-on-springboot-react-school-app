@@ -1,8 +1,12 @@
 import React from 'react';
+
 import { withRouter } from 'react-router-dom';
 
-import UserService from '../../app/service/userService';
+import { AuthContext } from '../../main/AuthenticationProvider'
+
 import LocalStorageService from '../../app/service/localStorageService'
+
+import UserService from '../../app/service/userService';
 
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
@@ -33,8 +37,11 @@ class Login extends React.Component {
             email: this.state.email,
             password: this.state.password
         }).then(response => {
+            //this.context.sessionStart(response.data)
             LocalStorageService.setItem('_logged_user', response.data)
             this.redirectHome()
+            
+            window.location.reload();
         }).catch(error => {
             errorMessage(error.response.data)
         })
@@ -72,8 +79,8 @@ class Login extends React.Component {
                                             </FormGroup>
 
                                             <div className="col-lg-12 d-flex justify-content-end mt-3">
+                                                <button className="btn btn-info  mx-2" onClick={this.redirectInsertUser}>Sign Up</button>
                                                 <button className="btn btn-success" onClick={this.signIn}>Sign In</button>
-                                                <button className="btn btn-danger" onClick={this.redirectInsertUser}>Sign Up</button>
                                             </div>
                                         </fieldset>
                                     </div>
@@ -86,5 +93,7 @@ class Login extends React.Component {
         )
     }
 }
+
+Login.contextType = AuthContext
 
 export default withRouter(Login)

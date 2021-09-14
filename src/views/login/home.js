@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { withRouter } from 'react-router-dom';
+import { AuthContext } from '../../main/AuthenticationProvider'
 
 import LocalStorageService from '../../app/service/localStorageService'
 
@@ -14,6 +16,7 @@ class Home extends React.Component {
 
     componentDidMount(){
         this.setState({userName: LocalStorageService.getItem('_logged_user')}) 
+        //this.setState({ userName: this.context.authenticatedUser })
     }
 
     render() {
@@ -30,5 +33,7 @@ class Home extends React.Component {
         )
     }
 }
+
+Home.contextType = AuthContext;
 
 export default withRouter(Home)

@@ -121,9 +121,9 @@ class SearchSchools extends React.Component {
                                 </FormGroup>
                             </div>
 
-                            <div className="col-lg-12 d-flex justify-content-end">
-                                <button className="btn btn-success mt-3" onClick={this.redirectInsertSchool}>Insert</button>
-                                <button className="btn btn-info mt-3 mx-2" onClick={this.find}>Search</button>
+                            <div className="col-lg-12 d-flex justify-content-end mt-3">
+                                <button className="btn btn-success" onClick={this.redirectInsertSchool}>Insert</button>
+                                <button className="btn btn-info mx-2" onClick={this.find}>Search</button>
                             </div>
                         </div>
                     </div>

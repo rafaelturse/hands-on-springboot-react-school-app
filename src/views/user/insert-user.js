@@ -1,5 +1,7 @@
 import React from 'react';
 
+import AuthService from '../../app/service/AuthService';
+
 import UserService from '../../app/service/userService'
 
 import Card from '../../components/card';
@@ -68,8 +70,12 @@ class InsertUser extends React.Component {
             })
     }
 
-    redirectLogin = () => {
-        this.props.history.push('/login');
+    redirectLoginOrHome = () => {
+        if( AuthService.isAuthenticatedUser() ){
+            this.props.history.push('/home');
+        } else {
+            this.props.history.push('/login');
+        }
     }
 
     redirectHome = () => {
@@ -134,7 +140,7 @@ class InsertUser extends React.Component {
                                 </FormGroup>
                             </div>
                             <div className="col-lg-12 d-flex justify-content-end mt-3">
-                                <button className="btn btn-danger mx-2" onClick={this.redirectLogin}>Cancel</button>
+                                <button className="btn btn-danger mx-2" onClick={this.redirectLoginOrHome}>Cancel</button>
                                 <button className="btn btn-success" onClick={this.insert}>Save</button>
                             </div>
                         </div>
