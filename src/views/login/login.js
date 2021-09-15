@@ -32,7 +32,31 @@ class Login extends React.Component {
         this.props.history.push('/insert-user');
     }
 
+    validate() {
+        const messages = []
+
+        if (!this.state.email) {
+            messages.push("Email is required")
+        }
+
+        if (!this.state.password) {
+            messages.push("Password is required")
+        }
+
+        return messages;
+    }
+
     signIn = async () => {
+        const messages = this.validate() 
+
+        if (messages && messages.length > 0) {
+            messages.forEach((message, i) => {
+                m.errorMessage(message)
+            })
+
+            return false
+        }
+
         this.service.authenticate({
             email: this.state.email,
             password: this.state.password
