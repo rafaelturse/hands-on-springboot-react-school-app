@@ -17,10 +17,10 @@ const redirectLogin = () => {
     this.props.history.push('/login');
 }
 
-function Navbar() {
-    return (
-        <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
-            <div className="container">
+function Navbar() {    
+    return (        
+        <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" role="navigation">
+            <div className="container-fluid">
                 <a className="navbar-brand" href="#/home" >Simple School</a>
                 <button
                     className="navbar-toggler"
@@ -33,7 +33,7 @@ function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div id="navbarResponsive" className="collapse navbar-collapse">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <NavbarItem render={isAuthenticatedUser()} href="#/insert-user" label="Users" />
                         <NavbarItem render={isAuthenticatedUser()} href="#/search-school" label="Schools" />
                         <NavbarItem render={isAuthenticatedUser()} href="#/search-grades" label="Grades" />
