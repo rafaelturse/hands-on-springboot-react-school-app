@@ -10,7 +10,9 @@ import UserService from '../../app/service/userService';
 
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
-import { errorMessage } from '../../components/toastr';
+import * as m from '../../components/toastr'
+
+import '../../css/general/page.css'
 
 class Login extends React.Component {
     state = {
@@ -47,7 +49,7 @@ class Login extends React.Component {
     }
 
     signIn = async () => {
-        const messages = this.validate() 
+        const messages = this.validate()
 
         if (messages && messages.length > 0) {
             messages.forEach((message, i) => {
@@ -64,50 +66,51 @@ class Login extends React.Component {
             //this.context.sessionStart(response.data)
             LocalStorageService.setItem('_logged_user', response.data)
             this.redirectHome()
-            
+
             window.location.reload();
         }).catch(error => {
-            errorMessage(error.response.data)
+            m.errorMessage(error.response.data)
         })
     }
 
     render() {
         return (
-            <div className="row">
-                <div className="col-md-6" style={{ position: 'relative', left: '300px' }}>
-                    <div className="bs-docs-section">
+            <div className="container mt-navbar">
+                <div className="row">
+                    <div className="
+                        col-9 col-sm-9 col-md-6 col-lg-6 col-xl-6 col-xxl-3 
+                        position-absolute start-50 translate-middle"
+                    >
                         <Card title="Login">
                             <div className="row">
-                                <div className="col-lg-12">
-                                    <div className="bs-component">
-                                        <fieldset>
-                                            <FormGroup label="Email: *" htmlFor="inputEmail">
-                                                <input
-                                                    id="inputEmail"
-                                                    className="form-control"
-                                                    name="email"
-                                                    value={this.state.email}
-                                                    onChange={e => this.setState({ email: e.target.value })}
-                                                    type="email"
-                                                />
-                                            </FormGroup>
-                                            <FormGroup label="Password: *" htmlFor="inputPassword">
-                                                <input
-                                                    id="inputPassword"
-                                                    className="form-control"
-                                                    name="password"
-                                                    value={this.state.password}
-                                                    onChange={e => this.setState({ password: e.target.value })}
-                                                    type="password"
-                                                />
-                                            </FormGroup>
+                                <div className="bs-component">
+                                    <fieldset>
+                                        <FormGroup label="Email: *" htmlFor="inputEmail">
+                                            <input
+                                                id="inputEmail"
+                                                className="form-control"
+                                                name="email"
+                                                value={this.state.email}
+                                                onChange={e => this.setState({ email: e.target.value })}
+                                                type="email"
+                                            />
+                                        </FormGroup>
+                                        <FormGroup label="Password: *" htmlFor="inputPassword">
+                                            <input
+                                                id="inputPassword"
+                                                className="form-control"
+                                                name="password"
+                                                value={this.state.password}
+                                                onChange={e => this.setState({ password: e.target.value })}
+                                                type="password"
+                                            />
+                                        </FormGroup>
 
-                                            <div className="col-lg-12 d-flex justify-content-end mt-3">
-                                                <button className="btn btn-info  mx-2" onClick={this.redirectInsertUser}>Sign Up</button>
-                                                <button className="btn btn-success" onClick={this.signIn}>Sign In</button>
-                                            </div>
-                                        </fieldset>
-                                    </div>
+                                        <div className="d-flex justify-content-end mt-3">
+                                            <button className="btn btn-info  mx-2" onClick={this.redirectInsertUser}>Sign Up</button>
+                                            <button className="btn btn-success" onClick={this.signIn}>Sign In</button>
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
                         </Card>
