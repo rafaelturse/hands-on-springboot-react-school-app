@@ -18,12 +18,6 @@ const redirectLogin = () => {
 }
 
 function Navbar() {
-    {
-        $(document).on('click','.navbar-collapse.show',function(e) {
-            $(this).collapse('hide');
-          });
-    }
-
     return (
         <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
             <div className="container">
@@ -31,8 +25,8 @@ function Navbar() {
                 <button
                     className="navbar-toggler"
                     type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarResponsive"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarResponsive"
                     aria-controls="navbarResponsive"
                     aria-expanded="false"
                     aria-label="Toggle navigation">
