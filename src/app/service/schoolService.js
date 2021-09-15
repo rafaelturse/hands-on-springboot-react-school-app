@@ -6,6 +6,10 @@ class SchoolService extends ApiService {
         super('/api/school')
     }
 
+    findAll() {
+        return this.get('/')
+    }
+
     find(schoolFilter) {
         return this.get(`?school=${schoolFilter}`)
     }

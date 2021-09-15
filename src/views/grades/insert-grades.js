@@ -49,7 +49,7 @@ class InsertGrades extends React.Component {
     }
 
     getSchools = () => {
-        this.schoolService.find()
+        this.schoolService.findAll()
             .then(response => {
                 this.setState({ schools: response.data })
                 this.setState({ schoolOptions: this.schoolOptions() })
