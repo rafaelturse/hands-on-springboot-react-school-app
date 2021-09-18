@@ -24,7 +24,7 @@ function GradesTable(props) {
                         <Button
                             className="p-button p-component p-button-rounded p-button-danger p-button-text p-button-icon-only" 
                             onClick={e => props.delete(i)}
-                            icon="pi pi-times"
+                            icon="pi pi-trash"
                         />
                     </div>
                 </td>

@@ -1,7 +1,4 @@
 import React from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Button } from 'primereact/button';
-import { Tooltip } from 'primereact/tooltip';
 
 import GradesService from '../../app/service/gradesService'
 import LocalStorageService from '../../app/service/localStorageService'
@@ -13,6 +10,7 @@ import GradesTable from '../../components/grades/gradesTable';
 import SelectMenu from '../../components/select-menu';
 
 import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Button } from 'primereact/button';
 
 class SearchGrades extends React.Component {
     state = {
@@ -89,6 +87,43 @@ class SearchGrades extends React.Component {
     render() {
         const subjectOptions = this.service.setSubjectList()
 
+        const exportPdf = () => {
+            import('jspdf').then(jsPDF => {
+                import('jspdf-autotable').then(() => {
+                    const cols = [
+                        { field: 'subject', header: 'Subject' },
+                        { field: 'student', header: 'Student' },
+                        { field: 'school', header: 'School' },
+                        { field: 'grades1', header: 'Grade 1' },
+                        { field: 'grades2', header: 'Grade 2' },
+                        { field: 'grades3', header: 'Grade 3' },
+                        { field: 'grades4', header: 'Grade 4' },
+                        { field: 'average', header: 'Average' }
+                    ];
+
+                    const exportColumns = cols.map(col => ({ title: col.header, dataKey: col.field }));
+            
+                    const options = []
+                    this.state.grades.map((i) => {
+                        return options.push({
+                            subject: i.subject,
+                            student: i.student,
+                            school: i.school.name,
+                            grades1: i.grade1,
+                            grades2: i.grade2,
+                            grades3: i.grade3,
+                            grades4: i.grade4,
+                            average: (i.grade1 + i.grade2 + i.grade3 + i.grade4) / 4
+                        })
+                    })
+
+                    const doc = new jsPDF.default(0, 0);
+                    doc.autoTable(exportColumns, options);
+                    doc.save('grades.pdf');
+                })
+            })
+        }
+
         const exportExcel = () => {
             const options = []
             this.state.grades.map((i) => {
@@ -120,17 +155,6 @@ class SearchGrades extends React.Component {
                 FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
             });
         }
-
-        const header = (
-            <div className="p-d-flex p-ai-center export-buttons">
-                <Button
-                    type="button"
-                    icon="pi pi-file-excel"
-                    onClick={exportExcel}
-                    className="p-button-success p-mr-2"
-                    data-pr-tooltip="XLS" />
-            </div>
-        )
 
         return (
             <Card title="Search Grades">
@@ -175,6 +199,7 @@ class SearchGrades extends React.Component {
                             <div className="col-lg-12 d-flex justify-content-end">
                                 <button className="btn btn-success mt-3" onClick={this.redirectInsertGrades}>Insert</button>
                                 <button className="btn btn-info mt-3 mx-2" onClick={this.find}>Search</button>
+
                             </div>
                         </div>
                     </div>
@@ -182,21 +207,20 @@ class SearchGrades extends React.Component {
                 <div className="row mt-5">
                     <div className="col-lg-12">
                         <div className="bs-component">
-                            {this.state.grades.length > 0 ?
-                                (
-                                    <div>
-                                        <Tooltip target=".export-buttons>button" position="top" render="false" />
-                                        <DataTable value={this.state.grades} header={header} dataKey="id" selectionMode="multiple" />
-                                    </div>
-                                ) : (<div />)
-                            }
-
                             <GradesTable
                                 id="table-grades"
                                 list={this.state.grades}
                                 edit={this.edit}
                                 delete={this.deleteDialog}
                             />
+                            {this.state.grades.length > 0 ?
+                                (
+                                    <div className="d-flex justify-content-end mt-3">
+                                        <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
+                                        <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
+                                    </div>
+                                ) : (<div />)
+                            }
                         </div>
                     </div>
                 </div>

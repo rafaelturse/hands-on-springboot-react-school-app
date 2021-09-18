@@ -1,7 +1,5 @@
 import React from 'react';
-import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
-import { Tooltip } from 'primereact/tooltip';
 
 import SchoolService from '../../app/service/schoolService'
 
@@ -74,6 +72,31 @@ class SearchSchools extends React.Component {
     }
 
     render() {
+        const exportPdf = () => {
+            import('jspdf').then(jsPDF => {
+                import('jspdf-autotable').then(() => {
+                    const cols = [
+                        { field: 'id', header: 'ID' },
+                        { field: 'school', header: 'School' }
+                    ];
+
+                    const exportColumns = cols.map(col => ({ title: col.header, dataKey: col.field }));
+            
+                    const options = []
+                    this.state.schools.map((i) => {
+                        return options.push({
+                            id: i.id,
+                            school: i.name
+                        })
+                    })
+
+                    const doc = new jsPDF.default(0, 0);
+                    doc.autoTable(exportColumns, options);
+                    doc.save('schools.pdf');
+                })
+            })
+        }
+
         const exportExcel = () => {
             import('xlsx').then(xlsx => {
                 const worksheet = xlsx.utils.json_to_sheet(this.state.schools);
@@ -91,17 +114,6 @@ class SearchSchools extends React.Component {
                 FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
             });
         }
-
-        const header = (
-            <div className="p-d-flex p-ai-center export-buttons">
-                <Button
-                    type="button"
-                    icon="pi pi-file-excel"
-                    onClick={exportExcel}
-                    className="p-button-success p-mr-2"
-                    data-pr-tooltip="XLS" />
-            </div>
-        )
 
         return (
             <Card title="Search Schools">
@@ -131,21 +143,20 @@ class SearchSchools extends React.Component {
                 <div className="row mt-5">
                     <div className="col-lg-12">
                         <div className="bs-component">
-                            {this.state.schools.length > 0 ?
-                                (
-                                    <div>
-                                        <Tooltip target=".export-buttons>button" position="top" render="false" />
-                                        <DataTable value={this.state.schools} header={header} dataKey="id" selectionMode="multiple" />
-                                    </div>
-                                ) : (<div />)
-                            }
-
                             <SchoolTable
                                 id="table-schools"
                                 list={this.state.schools}
                                 edit={this.edit}
                                 delete={this.deleteDialog}
                             />
+                            {this.state.schools.length > 0 ?
+                                (
+                                    <div className="d-flex justify-content-end mt-3">
+                                        <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
+                                        <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
+                                    </div>
+                                ) : (<div />)
+                            }
                         </div>
                     </div>
                 </div>
