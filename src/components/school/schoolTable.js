@@ -10,14 +10,14 @@ function SchoolTable(props) {
                 <td className="text-center">
                     <div className="d-flex justify-content-center">
                         <Button
-                            className="p-button p-component p-button-rounded p-button-info p-button-text p-button-icon-only" 
+                            className="p-button p-component p-button-rounded p-button-info p-button-text p-button-icon-only"
                             onClick={e => props.edit(i.id)}
                             icon="pi pi-user-edit"
                         />
                         <Button
-                            className="p-button p-component p-button-rounded p-button-danger p-button-text p-button-icon-only" 
+                            className="p-button p-component p-button-rounded p-button-danger p-button-text p-button-icon-only"
                             onClick={e => props.delete(i)}
-                            icon="pi pi-times"
+                            icon="pi pi-trash"
                         />
                     </div>
                 </td>
@@ -26,17 +26,19 @@ function SchoolTable(props) {
     })
 
     return (
-        <table className="table table-hover">
-            <thead className="text-center">
-                <tr>
-                    <th scope="col">School</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table className="table table-striped table-sm table-hover align-middle">
+                <thead className="table-dark align-middle text-center">
+                    <tr>
+                        <th scope="col">School</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        </div>
     )
 }
 

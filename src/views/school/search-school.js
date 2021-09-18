@@ -81,7 +81,7 @@ class SearchSchools extends React.Component {
                     ];
 
                     const exportColumns = cols.map(col => ({ title: col.header, dataKey: col.field }));
-            
+
                     const options = []
                     this.state.schools.map((i) => {
                         return options.push({
@@ -117,48 +117,37 @@ class SearchSchools extends React.Component {
 
         return (
             <Card title="Search Schools">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="bs-content">
-                            <div className="mt-2">
-                                <FormGroup label="School:" htmlFor="inputSchool">
-                                    <input
-                                        id="inputSchool"
-                                        className="form-control mt-1"
-                                        name="school"
-                                        value={this.state.school}
-                                        onChange={e => this.setState({ school: e.target.value })}
-                                        type="text"
-                                    />
-                                </FormGroup>
-                            </div>
-
-                            <div className="col-lg-12 d-flex justify-content-end mt-3">
-                                <button className="btn btn-success" onClick={this.redirectInsertSchool}>Insert</button>
-                                <button className="btn btn-info mx-2" onClick={this.find}>Search</button>
-                            </div>
-                        </div>
-                    </div>
+                <div className="mt-2">
+                    <FormGroup label="School:" htmlFor="inputSchool">
+                        <input
+                            id="inputSchool"
+                            className="form-control mt-1"
+                            name="school"
+                            value={this.state.school}
+                            onChange={e => this.setState({ school: e.target.value })}
+                            type="text"
+                        />
+                    </FormGroup>
+                </div>
+                <div className="col-lg-12 d-flex justify-content-end mt-3">
+                    <button className="btn btn-success" onClick={this.redirectInsertSchool}>Insert</button>
+                    <button className="btn btn-info mx-2" onClick={this.find}>Search</button>
                 </div>
                 <div className="row mt-5">
-                    <div className="col-lg-12">
-                        <div className="bs-component">
-                            <SchoolTable
-                                id="table-schools"
-                                list={this.state.schools}
-                                edit={this.edit}
-                                delete={this.deleteDialog}
-                            />
-                            {this.state.schools.length > 0 ?
-                                (
-                                    <div className="d-flex justify-content-end mt-3">
-                                        <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
-                                        <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
-                                    </div>
-                                ) : (<div />)
-                            }
-                        </div>
-                    </div>
+                    <SchoolTable
+                        id="table-schools"
+                        list={this.state.schools}
+                        edit={this.edit}
+                        delete={this.deleteDialog}
+                    />
+                    {this.state.schools.length > 0 ?
+                        (
+                            <div className="d-flex justify-content-end mt-3">
+                                <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
+                                <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
+                            </div>
+                        ) : (<div />)
+                    }
                 </div>
                 <div>
                     <ConfirmDialog
