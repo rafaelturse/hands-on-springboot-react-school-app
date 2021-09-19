@@ -122,6 +122,8 @@ class SearchGrades extends React.Component {
                     doc.save('grades.pdf');
                 })
             })
+
+            messages.successMessage("File exported to PDF")
         }
 
         const exportExcel = () => {
@@ -145,6 +147,8 @@ class SearchGrades extends React.Component {
                 const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
                 saveAsExcelFile(excelBuffer, 'grades');
             });
+
+            messages.successMessage("File exported to Excel")
         }
 
         const saveAsExcelFile = (buffer, fileName) => {

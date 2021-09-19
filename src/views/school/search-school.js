@@ -95,6 +95,8 @@ class SearchSchools extends React.Component {
                     doc.save('schools.pdf');
                 })
             })
+
+            messages.successMessage("File exported to PDF")
         }
 
         const exportExcel = () => {
@@ -102,14 +104,16 @@ class SearchSchools extends React.Component {
                 const worksheet = xlsx.utils.json_to_sheet(this.state.schools);
                 const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
                 const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-                saveAsExcelFile(excelBuffer, 'schools');
+                saveAsExcelFile(excelBuffer, 'schools', '.xlsx');
             });
+
+            messages.successMessage("File exported to Excel")
         }
 
-        const saveAsExcelFile = (buffer, fileName) => {
+        const saveAsExcelFile = (buffer, fileName, fileExtension) => {
             import('file-saver').then(FileSaver => {
                 let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-                let EXCEL_EXTENSION = '.xlsx';
+                let EXCEL_EXTENSION = fileExtension;
                 const data = new Blob([buffer], { type: EXCEL_TYPE });
                 FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
             });
