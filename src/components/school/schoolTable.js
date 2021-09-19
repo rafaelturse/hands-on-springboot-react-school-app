@@ -28,7 +28,7 @@ function SchoolTable(props) {
     return (
         <div class="table-responsive">
             <table className="table table-striped table-sm table-hover align-middle">
-                <thead className="table-dark align-middle text-center">
+                <thead className="thead-dark align-middle text-center">
                     <tr>
                         <th scope="col">School</th>
                         <th scope="col">Actions</th>

@@ -1,3 +1,13 @@
 .mt-navbar {
     margin-top: 15rem;
 }
+
+.thead-dark {
+    background: #34495e !important;
+    color: #FFF !important;
+}
+
+.card-header-dark {
+    background: #34495e !important;
+    color: #FFF !important;
+}

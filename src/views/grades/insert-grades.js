@@ -25,7 +25,7 @@ class InsertGrades extends React.Component {
         grade2: '',
         grade3: '',
         grade4: '',
-        isUpdate : false
+        isUpdate: false
     }
 
     constructor() {
@@ -153,7 +153,7 @@ class InsertGrades extends React.Component {
         if (params.id) {
             this.service.findById(params.id)
                 .then(response => {
-                    this.setState({ ...response.data, isUpdate:true })
+                    this.setState({ ...response.data, isUpdate: true })
                 })
                 .catch(error => {
                     m.errorMessage(error.response.data)
@@ -169,100 +169,96 @@ class InsertGrades extends React.Component {
         return (
             <Card title={this.state.isUpdate ? 'Update Grades' : 'Insert Grades'}>
                 <div className="row">
-                    <div className="col-lg-12">
-                        <div className="bs-content">
-                            <div className="mt-2">
-                                <FormGroup label="School: *" htmlFor="inputSchool">
-                                    <SelectMenu
-                                        id="inputSchool"
-                                        className="form-control mt-1"
-                                        list={this.state.schoolOptions}
-                                        value={this.state.school}
-                                        onChange={e => this.setState({ school: e.target.value })}
-                                    />
-                                </FormGroup>
-                            </div>
-                            <div className="mt-2">
-                                <FormGroup label="Student: *" htmlFor="inputStudent">
-                                    <input
-                                        id="inputStudent"
-                                        className="form-control mt-1"
-                                        name="student"
-                                        value={this.state.student}
-                                        onChange={e => this.setState({ student: e.target.value })}
-                                        type="text"
-                                    />
-                                </FormGroup>
-                            </div>
-                            <div className="mt-2">
-                                <FormGroup label="Subject: *" htmlFor="inputSubject">
-                                    <SelectMenu
-                                        id="inputSubject"
-                                        list={this.state.subjects}
-                                        value={this.state.subject}
-                                        onChange={e => this.setState({ subject: e.target.value })}
-                                    />
-                                </FormGroup>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 mt-2">
-                                    <FormGroup label="Grade 1:" htmlFor="inputGrade1">
-                                        <input
-                                            id="inputGrade1"
-                                            className="form-control mt-1"
-                                            name="grade1"
-                                            value={this.state.grade1}
-                                            onChange={e => this.setState({ grade1: e.target.value })}
-                                            type="text"
-                                        />
-                                    </FormGroup>
-                                </div>
-                                <div className="col-lg-3 mt-2">
-                                    <FormGroup label="Grade 2:" htmlFor="inputGrade2">
-                                        <input
-                                            id="inputGrade2"
-                                            className="form-control mt-1"
-                                            name="grade2"
-                                            value={this.state.grade2}
-                                            onChange={e => this.setState({ grade2: e.target.value })}
-                                            type="text"
-                                        />
-                                    </FormGroup>
-                                </div>
-                                <div className="col-lg-3 mt-2">
-                                    <FormGroup label="Grade 3:" htmlFor="inputGrade3">
-                                        <input
-                                            id="inputGrade3"
-                                            className="form-control mt-1"
-                                            name="grade3"
-                                            value={this.state.grade3}
-                                            onChange={e => this.setState({ grade3: e.target.value })}
-                                            type="text"
-                                        />
-                                    </FormGroup>
-                                </div>
-                                <div className="col-lg-3 mt-2">
-                                    <FormGroup label="Grade 4:" htmlFor="inputGrade4">
-                                        <input
-                                            id="inputGrade4"
-                                            className="form-control mt-1"
-                                            name="grade4"
-                                            value={this.state.grade4}
-                                            onChange={e => this.setState({ grade4: e.target.value })}
-                                            type="text"
-                                        />
-                                    </FormGroup>
-                                </div>
-                                <div className="col-lg-12 d-flex justify-content-end mt-3">
-                                    <button className="btn btn-danger mx-2" onClick={this.redirectSearchGrades}>Cancel</button>
-                                    {this.state.isUpdate ? 
-                                    (
-                                        <button className="btn btn-info" onClick={this.update}>Update</button>
-                                    ) : (
-                                        <button className="btn btn-success" onClick={this.insert}>Save</button>
-                                    )}
-                                </div>
-                            </div>
+                    <div className="col">
+                        <FormGroup label="School: *" htmlFor="inputSchool">
+                            <SelectMenu
+                                id="inputSchool"
+                                className="form-control mt-1"
+                                list={this.state.schoolOptions}
+                                value={this.state.school}
+                                onChange={e => this.setState({ school: e.target.value })}
+                            />
+                        </FormGroup>
+                    </div>
+                    <div className="mt-2">
+                        <FormGroup label="Student: *" htmlFor="inputStudent">
+                            <input
+                                id="inputStudent"
+                                className="form-control mt-1"
+                                name="student"
+                                value={this.state.student}
+                                onChange={e => this.setState({ student: e.target.value })}
+                                type="text"
+                            />
+                        </FormGroup>
+                    </div>
+                    <div className="mt-2">
+                        <FormGroup label="Subject: *" htmlFor="inputSubject">
+                            <SelectMenu
+                                id="inputSubject"
+                                list={this.state.subjects}
+                                value={this.state.subject}
+                                onChange={e => this.setState({ subject: e.target.value })}
+                            />
+                        </FormGroup>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3 mt-2">
+                            <FormGroup label="Grade 1:" htmlFor="inputGrade1">
+                                <input
+                                    id="inputGrade1"
+                                    className="form-control mt-1"
+                                    name="grade1"
+                                    value={this.state.grade1}
+                                    onChange={e => this.setState({ grade1: e.target.value })}
+                                    type="text"
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-lg-3 mt-2">
+                            <FormGroup label="Grade 2:" htmlFor="inputGrade2">
+                                <input
+                                    id="inputGrade2"
+                                    className="form-control mt-1"
+                                    name="grade2"
+                                    value={this.state.grade2}
+                                    onChange={e => this.setState({ grade2: e.target.value })}
+                                    type="text"
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-lg-3 mt-2">
+                            <FormGroup label="Grade 3:" htmlFor="inputGrade3">
+                                <input
+                                    id="inputGrade3"
+                                    className="form-control mt-1"
+                                    name="grade3"
+                                    value={this.state.grade3}
+                                    onChange={e => this.setState({ grade3: e.target.value })}
+                                    type="text"
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-lg-3 mt-2">
+                            <FormGroup label="Grade 4:" htmlFor="inputGrade4">
+                                <input
+                                    id="inputGrade4"
+                                    className="form-control mt-1"
+                                    name="grade4"
+                                    value={this.state.grade4}
+                                    onChange={e => this.setState({ grade4: e.target.value })}
+                                    type="text"
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-lg-12 d-flex justify-content-end mt-3">
+                            <button className="btn btn-danger mx-2" onClick={this.redirectSearchGrades}>Cancel</button>
+                            {this.state.isUpdate ?
+                                (
+                                    <button className="btn btn-info" onClick={this.update}>Update</button>
+                                ) : (
+                                    <button className="btn btn-success" onClick={this.insert}>Save</button>
+                                )}
                         </div>
                     </div >
                 </div >

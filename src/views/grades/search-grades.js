@@ -196,32 +196,31 @@ class SearchGrades extends React.Component {
                     <button className="btn btn-success mx-2" onClick={this.redirectInsertGrades}>Insert</button>
                     <button className="btn btn-info" onClick={this.find}>Search</button>
                 </div>
-                <div className="mt-5">
-                    <GradesTable
-                        id="table-grades"
-                        list={this.state.grades}
-                        edit={this.edit}
-                        delete={this.deleteDialog}
-                    />
-                    {this.state.grades.length > 0 ?
-                        (
-                            <div className="d-flex justify-content-end mt-3">
-                                <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
-                                <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
-                            </div>
-                        ) : (<div />)
-                    }
-                </div>
-                <div>
-                    <ConfirmDialog
-                        visible={this.state.showConfirmDialog}
-                        onHide={() => this.setState({ showConfirmDialog: false })}
-                        message="Are you sure you want to proceed?"
-                        header="Confirmation"
-                        icon="pi pi-exclamation-triangle"
-                        accept={this.deleteAction}
-                    />
-                </div>
+                {this.state.grades.length > 0 ? (
+                    <div className="mt-5">
+                        <GradesTable
+                            id="table-grades"
+                            list={this.state.grades}
+                            edit={this.edit}
+                            delete={this.deleteDialog}
+                        />
+                        <div className="d-flex justify-content-end mt-3">
+                            <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
+                            <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
+                        </div>
+                        <div>
+                            <ConfirmDialog
+                                visible={this.state.showConfirmDialog}
+                                onHide={() => this.setState({ showConfirmDialog: false })}
+                                message="Are you sure you want to proceed?"
+                                header="Confirmation"
+                                icon="pi pi-exclamation-triangle"
+                                accept={this.deleteAction}
+                            />
+                        </div>
+                    </div>
+                ) : (<div />)
+                }
             </Card>
         )
     }
