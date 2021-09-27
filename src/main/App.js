@@ -5,6 +5,7 @@ import AuthenticationProvider from './AuthenticationProvider'
 import Routes from './routes';
 
 import Navbar from '../components/navbar'
+import Footer from '../components/footer'
 
 import 'toastr/build/toastr.min.js'
 
@@ -24,6 +25,7 @@ class App extends React.Component {
         <div className="container">
           <Routes />
         </div>
+        <Footer />
       </AuthenticationProvider>
     )
   }

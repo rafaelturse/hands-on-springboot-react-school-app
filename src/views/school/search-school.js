@@ -148,8 +148,16 @@ class SearchSchools extends React.Component {
                         />
 
                         <div className="d-flex justify-content-end mt-3">
-                            <Button className="p-button-raised p-button-success p-button-rounded mx-2" icon="pi pi-file-excel" onClick={exportExcel} />
-                            <Button className="p-button-raised p-button-danger p-button-rounded" icon="pi pi-file-pdf" onClick={exportPdf} />
+                            <Button 
+                                className="p-button-raised p-button-success p-button-rounded mx-2" 
+                                title="Export to Excel"
+                                icon="pi pi-file-excel" 
+                                onClick={exportExcel} />
+                            <Button 
+                                className="p-button-raised p-button-danger p-button-rounded" 
+                                title="Export to PDF"
+                                icon="pi pi-file-pdf" 
+                                onClick={exportPdf} />
                         </div>
 
                         <div>
